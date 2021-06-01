@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
+    <link rel="stylesheet" href="/static/estilos.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P69G5SS8T1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-P69G5SS8T1');
+    </script>
+{% endblock %}
+{% block content %}
+    <form class="formulario" method="POST" action="{{url_for('signup')}}">
+        <h1> Sign up </h1>
+        <div class="contenedor">
+            {{ form.hidden_tag() }}
+        	{{ wtf.form_field(form.email) }}
+        	{{ wtf.form_field(form.username) }}
+        	{{ wtf.form_field(form.password) }}
+        	{{ wtf.form_field(form.confirm_password) }}
+        	{{ wtf.form_field(form.show) }}
+            <button class="button" type="submit"> Sign up </button>
+            <br></br>
+            <p>By registering, you agree to our Terms of Use and Privacy Policy.</p>
+            <p>Already have an account? <a class="link" href="http://proyectosiii.pythonanywhere.com/login">Login</a></p>
+        </div>
+   </form>
+   <script>
+        var checkbox  = document.getElementById('show');
+        const passw = document.querySelector('#password');
+        const confirm_passw = document.querySelector('#confirm_password');
+        const user = document.querySelector('#username');
+        const mail = document.querySelector('#email');
+        $( document ).ready(function() {
+            passw.style.backgroundImage = "url('/static/key.JPG')";
+            passw.style.backgroundPosition = "10px 4px";
+            passw.style.backgroundRepeat = "no-repeat";
+            passw.style.padding = "12px 20px 12px 50px";
+            confirm_passw.style.backgroundImage = "url('/static/key.JPG')";
+            confirm_passw.style.backgroundPosition = "10px 4px";
+            confirm_passw.style.backgroundRepeat = "no-repeat";
+            confirm_passw.style.padding = "12px 20px 12px 50px";
+            user.style.backgroundImage = "url('/static/user.JPG')";
+            user.style.backgroundPosition = "14px 2px";
+            user.style.backgroundRepeat = "no-repeat";
+            user.style.padding = "12px 20px 12px 50px";
+            mail.style.backgroundImage = "url('/static/mail.JPG')";
+            mail.style.backgroundPosition = "10px 5px";
+            mail.style.backgroundRepeat = "no-repeat";
+            mail.style.padding = "12px 20px 12px 50px";
+        });
+        $( "#show" ).on( "click", function() {
+            if(checkbox.checked) {
+                passw.type = 'text';
+                passw.style.animation = "showpass 2.5s ease-in-out 1";
+                confirm_passw.type = 'text';
+                confirm_passw.style.animation = "showpass 2.5s ease-in-out 1";
+            } else {
+                passw.type = 'password';
+                passw.style.animation = "showpass1 2.5s ease-in-out 1";
+                confirm_passw.type = 'password';
+                confirm_passw.style.animation = "showpass1 2.5s ease-in-out 1";
+            }
+
+        });
+    </script>
+{% endblock %}

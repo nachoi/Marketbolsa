@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/estilosperfil.css">
+    <script src='../static/Chart.min.js'></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4MM6WR9NT1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4MM6WR9NT1');
+    </script>
+{% endblock %}
+{% block content %}
+    <section class="seccion-perfil-usuario">
+        <div class="perfil-usuario-header">
+            <div class="perfil-usuario-portada">
+                <div class="perfil-usuario-avatar">
+                    <button type="button" class="boton-avatar"><i class="far fa-image"></i></button>
+                </div>
+                <button type="button" class="boton-portada"><i class="far fa-image"></i> Change background</button>
+            </div>
+        </div>
+        <div class="perfil-usuario-body">
+            <div class="perfil-usuario-bio">
+                <h3 class="titulo">{{ info.username }}</h3>
+                <table class="table_values">
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Total amount</th>
+                        <th>Time real price</th>
+                        <th>Total price</th>
+                    </tr>
+                    {% for key,stock in stocks.items() %}
+                        {% if stock['amount'] > 0 %}
+                            <tr>
+                                <td><a href="/company/{{stock['exchange']}}/{{stock['symbol']}}">{{stock['symbol']}}</a></td>
+                                <td>{{stock['amount']}}</td>
+                                <td>{{stock['priceClose']}} $</td>
+                                <td>{{stock['amount'] * stock['priceClose']}} $</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                <canvas id="myChart" width="375" height="250"></canvas>
+            </div>
+            <div class="perfil-usuario-footer">
+                <ul class="lista-datos">
+                    <li><div>&nbsp; Profile: <b> {{ info.profile }} </b></div></li>
+                </ul>
+                <ul class="lista-datos">
+                    <li><div>&nbsp; E-mail: <b> {{ info.email }} </b></div></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <br>
+        <div><b> My History of orders: </b></div>
+        <br>
+        <table class="table_values">
+            <tr>
+                <th>Order type</th>
+                <th>Symbol</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Purchase price</th>
+                <th>Real time price</th>
+                <th>Profit per action if sell now</th>
+                <th>Is Sold?</th>
+            </tr>
+            {%for order in info.buy_orders%}
+                {% if buy_id | int == order.id %}
+                    <tr style="animation: big_order 5s ease-in-out 1;">
+                {% else %}
+                    <tr>
+                {% endif %}
+                    <td>BUY</td>
+                    <td><a href="/company/{{order.company.exchange}}/{{order.company.symbol}}">{{order.company.symbol}}</a></td>
+                    <td>{{order.amount}}</td>
+                    <td>{{order.created_date}}</td>
+                    <td>{{order.price}} $</td>
+                    <td>{{stocks[order.company.symbol]['priceClose']}} $</td>
+                    {% if order.price == stocks[order.company.symbol]['priceClose'] %}
+                        <td>0 $</td>
+                    {% elif (order.price < stocks[order.company.symbol]['priceClose']) %}
+                        <td><span style="color:green;"> Beneficios </span> de <b>{{stocks[order.company.symbol]['priceClose'] - order.price}} $</b></td>
+                    {% else %}
+                        <td><span style="color:red;"> Pérdidas </span> de <b>{{order.price - stocks[order.company.symbol]['priceClose']}} $</b></td>
+                    {%endif%}
+                    {% if order.is_sold == False %}
+                        <td>
+                            <div class="sell">
+                                <form action="." method="POST">
+                                    <input type="hidden" name="amountsell" id="amountsell-{{order.id}}" value="1">
+                                    <input type="hidden" name="actionsell" value="{{order.company.id}}-{{order.id}}-{{order.amount}}-{{stocks[order.company.symbol]['priceClose']}}">
+                                    <button type="submit" id="volume-{{order.id}}" class="btn btn-success">Sell 1 action</button>
+                                </form>
+                                {% if order.amount > 1 %}
+                                <input type="range" min="1" max="{{order.amount}}" value="1" id="fader" step="1" oninput="outputUpdate(value,{{order.id}})">
+                                {%endif%}
+                            </div>
+                        </td>
+                    {% else %}
+                        <td><input type="submit" name="vs" disabled class="btn btn-danger" value="Sold"></td>
+                    {%endif%}
+                </tr>
+            {%endfor%}
+        </table>
+        <br>
+        <table class="table_values">
+            <tr>
+                <th>Order type</th>
+                <th>Symbol</th>
+                <th>Amount</th>
+                <th>Sell date</th>
+                <th>Sale price</th>
+                <th>Bought date</th>
+                <th>Purchase price</th>
+                <th>Profit</th>
+            </tr>
+            {%for order in info.sell_orders%}
+                    {% if sell_id | int == order.id %}
+                        <tr style="animation: big_order 5s ease-in-out 1;">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                        <td>SELL</td>
+                        <td><a href="/company/{{order.company.exchange}}/{{order.company.symbol}}">{{order.company.symbol}}</a></td>
+                        <td>{{order.amount}}</td>
+                        <td>{{order.created_date}}</td>
+                        <td>{{order.price}} $</td>
+                        {%for order1 in info.buy_orders%}
+                            {% if order.buy_id == order1.id %}
+                                <td>{{order1.created_date}}</td>
+                                <td>{{order1.price}} $</td>
+                                <td>{{(order.price - order1.price) * order.amount}} $</td>
+                            {%endif%}
+                        {%endfor%}
+                    </tr>
+            {%endfor%}
+        </table>
+    </div>
+    <script>
+        function outputUpdate(vol,id) {
+        	document.querySelector('#volume-'+id).innerHTML  = "Sell "+vol+" action";
+        	document.querySelector('#amountsell-'+id).value = vol;
+        }
+
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+      Chart.defaults.global.responsive = true;
+
+      // define the chart data
+      var chartData = {
+        labels : [
+                    {% for item in info.cash %}
+                        "{{item.date}}".substring(2,19),
+                    {% endfor %}],
+        datasets : [{
+            label: "{{info.username}}'s cash",
+            borderColor: "rgba(75,192,192,1)",
+            backgroundColor: "rgba(75,192,192,0.25)",
+            borderCapStyle: 'butt',
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 2,
+            pointHitRadius: 10,
+            data : [
+                    {% for item in info.cash %}
+                        {{item.money}},
+                    {% endfor %}]
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("myChart").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+    </script>
+{% endblock %}

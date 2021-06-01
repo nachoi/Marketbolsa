@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E4WWP5EBZM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E4WWP5EBZM');
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="hero">
+        <header>
+            <section class="container hero__main">
+                <div class="hero__textos">
+                    <h1 class="title">La mejor <span class="title--active"> Experiencia Digital.</span> </h1>
+                    <p class="copy">Nos encargamos de llevar tu idea al<span class="copy__active"> siguiente nivel</span></p>
+                    <a href="http://proyectosiii.pythonanywhere.com/signup" class="cta">Comienza ahora</a>
+                </div>
+            </section>
+        </header>
+        <div class="container" id="news">
+            <div class="row">
+                <h1 class="title--active">News:</h1>
+            </div>
+            {% for datas in data %}
+                <div class="row">
+                    <a href="{{ datas.link }}" class="title-link">{{ datas.title|safe }}</a>
+                </div>
+                <div>
+                    {{ datas.content|truncate() }}
+                </div>
+                <div>
+                    <small>
+                        <u>Posted {{ datas.date[0:10] }} at {{ datas.date[11:19] }}</u>
+                    </small>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <main>
+        <section class="projects-container">
+            <h2 class="subtitle">Comparative Chart<span class="point">.</span></h2>
+            <p class="copy__section">Hemos colaborado con los mejores</p>
+            <article class="container-bg">
+                <div class="card">
+                    <div class="cards__texts">
+                        <h3 class="card__title">Análisis de gráficos<span class="point">.</span></h3>
+                        <p class="card__date">12 de enero de 2022</p>
+                        <p class="card__copy">Entra y analiza todos los gráficos sin problema. Gana dinero sin perdidas con nuestros conociminetos y gráficos.</p>
+                        <a href="http://proyectosiii.pythonanywhere.com/module002/" class="card__button">Ver Gráficos</a>
+                    </div>
+                </div>
+                <div class="background">
+                    <img src="static/background2.jpg" class="background__img">
+                    <div class="background__text">
+                        <h3 class="background__title">Gráficos actualizados al instante</h3>
+                        <p class="background__copy">Te sumergerás en un sin fin de información</p>
+                    </div>
+
+                </div>
+            </article>
+        </section>
+        <section class="email container container--modifier">
+            <h2 class="subtitle subtitle--modifier">Somos tu mejor opción para conseguir las ganancias que esperas</h2>
+            <p class="copy__section copy__section--modifier">No te quedes atrás y logra tus objetivos, rodeado de los mejores</p>
+            <div class="check">
+                <div class="check__item">
+                    <i class="bx bx bx-check"></i>
+                    <div class="check__numbers">
+                        <p class="check__number">+200</p>
+                        <p class="check__copy">Proyectos exitosos</p>
+                    </div>
+                </div>
+                <div class="check__item">
+                    <i class="bx bx bx-check"></i>
+                    <div class="check__numbers">
+                        <p class="check__number">+200</p>
+                        <p class="check__copy">Proyectos exitosos</p>
+                    </div>
+                </div>
+                <div class="check__item">
+                    <i class="bx bx bx-check"></i>
+                    <div class="check__numbers">
+                        <p class="check__number">+200</p>
+                        <p class="check__copy">Proyectos exitosos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div class="row">
+                <h1>Comments:</h1>
+            </div>
+            {% for comment in comments %}
+                {% if id == comment.id %}
+                    <div style="animation: big_comment 5s ease-in-out 1;">
+                {% else %}
+                    <div>
+                {% endif %}
+                    <div class="row">
+                        {{ comment.content }}
+                    </div>
+                    <div>
+                        <small>
+                            Posted
+                            {% if comment.posted %}
+                                {{ comment.posted.strftime("%A, %d %B %Y at %H:%M") }}
+                            {% else %}
+                                at an unknown time
+                            {% endif %}
+                            by
+                            {% if comment.commenter %}
+                                {{ comment.commenter.username }}
+                            {% else %}
+                                anonymous
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            {% endfor %}
+            {% if current_user.is_authenticated %}
+                <div class="row">
+                    <form action="." method="POST">
+                        <textarea name="contents" placeholder="Enter a comment" class="form-control"></textarea>
+                        <button type="submit" id="post_but" class="btn btn-success">Post comment</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container footer__caption">
+            <section class="download">
+                <h3 class="title__footer">Descarga nuestra App</h3>
+                <div class="download__app">
+                    <div class="download__item">
+                        <i class="bx bx1-apple download__logo"></i>
+                        <h4 class="download__title">App Store</h4>
+                    </div>
+                    <div class="download__item">
+                        <i class="bx bx1-play-store download__logo"></i>
+                        <h4 class="download__title">Play Store</h4>
+                    </div>
+                </div>
+                <div class="footer__copy">
+                    <p class="copyright">GRAFICS &copy; 2021 Todos los derechos reservados</p>
+                    <a href="#" class="política__privacidad política__privacidad--margin">Política de privacidad</a>
+                    <a href="#" class="política__privacidad">Terminos y condiciones</a>
+                </div>
+            </section>
+            <section class="get-email">
+                <h3 class="title__footer">¿Estás listo para trabajr con nosotros?</h3>
+                <form class="newsletter newsletter--modifier">
+                    <input type="text" class="newsletter__input" placeholder="Ingresa tu Email">
+                    <input type="submit" class="newsletter__submit" >
+                </form>
+                <div class="socialmedia">
+                    <i class="socialmedia__icon bx bx1-facebook-circle"></i>
+                    <i class="socialmedia__icon bx bx1-linkedin-square"></i>
+                    <i class="socialmedia__icon bx bx1-twitter"></i>
+                    <i class="socialmedia__icon bx bx1-instagram"></i>
+                    <i class="socialmedia__icon bx bx1-github"></i>
+                </div>
+            </section>
+        </div>
+        <div class="contact">
+            <div class="item__contact">
+                <i class="bx bx-copyright contact__icon"></i>
+                <h3 class="contact__title">GRAFICS</h3>
+            </div>
+            <div class="item__contact">
+                <i class="bx bx-mail-send contact__icon"></i>
+                <h3 class="contact__title">@GRAFICS</h3>
+            </div>
+            <div class="item__contact">
+                <i class="bx bxs-edit-location contact__icon"></i>
+                <h3 class="contact__title">Pasemos a las ganancias!</h3>
+            </div>
+            <div class="item__contact">
+                <i class="bx bxs-chat contact__icon contact__icon--modifier"></i>
+                <h3 class="contact__title">Contactanos ahora</h3>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        table,tr {
+            border: 1px solid black;
+            margin-left: 10px;
+        }
+        td,th {
+            padding: 5px;
+        }
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: black;
+            color: white;
+            padding: 8px;
+        }
+
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tr:hover {background-color: #ddd;}
+
+        .heroe{
+            width: 100%;
+            min-height: 100vh;
+            margin-top: 20px;
+        }
+
+        .container{
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            height: auto;
+        }
+    </style>
+    <div class="heroe">
+        <div class="container">
+            <table class="table_values">
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Stock Exchange</th>
+                    <th>Stock Exchange MIC</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Open</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                </tr>
+                {% for datas in data.data %}
+                    <tr>
+                        {% for data_values in data_value.data %}
+                            {% if data_values.symbol==datas.symbol and data_values.exchange==datas.stock_exchange.mic %}
+                                <td><a href="http://proyectosiii.pythonanywhere.com/company/{{datas.stock_exchange.mic}}/{{datas.symbol}}">{{ datas.name }}</a></td>
+                                <td>{{ datas.symbol }}</td>
+                                <td>{{ datas.stock_exchange.acronym }}</td>
+                                {% for data_values in data_value.data %}
+                                    {% if data_values.symbol==datas.symbol %}
+                                    <td>{{ data_values.exchange }}</td>
+                                    <td>{{ data_values.high }} $</td>
+                                    <td>{{ data_values.low }} $</td>
+                                    <td>{{ data_values.open }} $</td>
+                                    <td>{{ data_values.close }} $</td>
+                                    <td>{{ data_values.volume }}</td>
+                                    {% break %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% break %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

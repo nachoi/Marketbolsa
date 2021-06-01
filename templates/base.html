@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Marketbolsa </title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/static/style.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      {% block head %} {% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-default" id="navb">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Marketbolsa</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class={% if module=='home' %}"active"{%else%}""{%endif%}><a href="/">Home</a></li>
+          <li class={% if module=='market' %}"active"{%else%}""{%endif%}><a href="{{ url_for('market') }}">Market</a></li>
+          <li class={% if module=='module002' %}"active"{%else%}""{%endif%}><a href="/module002">Comparative Chart</a></li>
+          {% if current_user.is_authenticated %}
+            <li class={% if module=='module003' %}"active"{%else%}""{%endif%}><a href="/wallet">Wallet</a></li>
+            {% if current_user.profile in ('admin') %}
+                <li><a href="/admin">Admin</a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Log out</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Log in</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <div>
+        <div class="container">
+            {% for message in get_flashed_messages() %}
+                <br>
+                <div class="alert alert-warning">
+                    {{message}}
+                </div>
+            {% endfor%}
+        </div>
+    </div>
+    {% block content %} {% endblock %}
+</body>
+

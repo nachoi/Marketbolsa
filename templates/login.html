@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
+    <link rel="stylesheet" href="/static/estilos.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4ZT1KN0RZ1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4ZT1KN0RZ1');
+    </script>
+{% endblock %}
+{% block content %}
+    <form class="formulario" method="POST" action="{{url_for('login')}}">
+        <h1>Login</h1>
+        <div class="contenedor">
+            {{ form.hidden_tag() }}
+        	{{ wtf.form_field(form.emailORusername) }}
+        	{{ wtf.form_field(form.password) }}
+        	{{ wtf.form_field(form.show) }}
+            <button class="button" type="submit"> Login </button>
+            <br></br>
+            <p>Don't have an account? <a class="link" href="http://proyectosiii.pythonanywhere.com/signup">Sign up</a></p>
+        </div>
+   </form>
+   <script>
+        var checkbox  = document.getElementById('show');
+        var passw = document.querySelector('#password');
+        const userormail = document.querySelector('#emailORusername');
+        $( document ).ready(function() {
+            passw.style.backgroundImage = "url('/static/key.JPG')";
+            passw.style.backgroundPosition = "10px 4px";
+            passw.style.backgroundRepeat = "no-repeat";
+            passw.style.padding = "12px 20px 12px 50px";
+            userormail.style.backgroundImage = "url('/static/user.JPG')";
+            userormail.style.backgroundPosition = "14px 2px";
+            userormail.style.backgroundRepeat = "no-repeat";
+            userormail.style.padding = "12px 20px 12px 50px";
+
+        });
+        $( "#show" ).on( "click", function() {
+            if(checkbox.checked) {
+                passw.type = 'text';
+                passw.style.animation = "showpass 2.5s ease-in-out 1";
+            } else {
+                passw.type = 'password';
+                passw.style.animation = "showpass1 2.5s ease-in-out 1";
+            }
+
+        });
+    </script>
+{% endblock %}

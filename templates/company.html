@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block head %}
+    <script src='/static/Chart.min.js'></script>
+{% endblock %}
+{% block content %}
+    <style>
+        table,tr {
+            border: 1px solid black;
+            margin-left: 10px;
+        }
+        td,th {
+            padding: 5px;
+        }
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: black;
+            color: white;
+            padding: 8px;
+        }
+        tr:nth-child(even){background-color: #f2f2f2;}
+        tr:hover {background-color: #ddd;}
+        .heroe{
+            width: 100%;
+            min-height: 100vh;
+            margin-top: 20px;
+        }
+
+        .container{
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            height: auto;
+        }
+        button {
+            border-radius: 4px;
+            transition: all 0.3s ease-in-out;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 3px 5px 5px rgba(75,2,134,0.3);
+        }
+    </style>
+    <div class="heroe">
+        <div class="container">
+            <table class="table_values">
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Stock Exchange</th>
+                    <th>Stock Exchange MIC</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Open</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                </tr>
+                {% for datas in data.data %}
+                    <tr>
+                        {% for data_values in data_value.data %}
+                            {% if data_values.symbol==datas.symbol and data_values.exchange==datas.stock_exchange.mic %}
+                                <td>{{ datas.name }}</td>
+                                <td>{{ datas.symbol }}</td>
+                                <td>{{ datas.stock_exchange.acronym }}</td>
+                                {% for data_values in data_value.data %}
+                                    {% if data_values.symbol==datas.symbol %}
+                                    <td>{{ data_values.exchange }}</td>
+                                    <td>{{ data_values.high }} $</td>
+                                    <td>{{ data_values.low }} $</td>
+                                    <td>{{ data_values.open }} $</td>
+                                    <td>{{ data_values.close }} $</td>
+                                    <td>{{ data_values.volume }}</td>
+                                    {% break %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% break %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <canvas id="myChart" width="750" height="500"></canvas>
+            {% if current_user.is_authenticated %}
+            <h1>Order:</h1>
+            <form action="" method="post">
+                <label for="number">Number of actions:</label>
+                <input type="number" id="num" name="num">
+                <button type="submit">Buy</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+    <script>
+
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+      Chart.defaults.global.responsive = false;
+
+      // define the chart data
+      var chartData = {
+        labels : [
+                    {% for item in data_value2.data|reverse %}
+                        "{{item.date}}".substring(2,10),
+                    {% endfor %}],
+        datasets : [{
+            label: '{{ symbol }}',
+            borderColor: "rgba(75,192,192,1)",
+            backgroundColor: "rgba(75,192,192,0.25)",
+            borderCapStyle: 'butt',
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 2,
+            pointHitRadius: 10,
+            data : [
+                    {% for item in data_value2.data|reverse %}
+                        {{item.close}},
+                    {% endfor %}]
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("myChart").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+    </script>
+{% endblock %}

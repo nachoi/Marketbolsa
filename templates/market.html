@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% block head %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KK9JYHVK14"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KK9JYHVK14');
+    </script>
+{% endblock %}
+{% block content %}
+    <style>
+        table,tr {
+            border: 1px solid black;
+        }
+        td,th {
+            padding: 5px;
+        }
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: black;
+            color: white;
+            padding: 8px;
+        }
+        #searcher_but {
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+        #searcher_but:hover {
+            transform: scale(1.05);
+            box-shadow: 3px 5px 5px rgba(75,2,134,0.3);
+        }
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tr:hover {background-color: #ddd;}
+
+        .form-inline .form-control {
+            width: 600px;
+            margin-top: 12px;
+        }
+        .form-control {
+            display: block;
+            width:600px;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .btn {padding: .375rem .75rem; margin-top:10px;}
+        .heroe{
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .container{
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            height: auto;
+        }
+        @keyframes big_search {
+            0% {
+                font-weight: 400;
+                font-size: 100%;
+                background-color: #FFFFFF;
+            }
+            10% {
+                font-weight: 500;
+                font-size: 110%;
+                background-color: #FCFECE;
+            }
+            20% {
+                font-weight: 600;
+                font-size: 120%;
+                background-color: #FBFF9D;
+            }
+            30% {
+                font-weight: 700;
+                font-size: 130%;
+                background-color: #F8FE69;
+            }
+            40% {
+                font-weight: 800;
+                font-size: 140%;
+                background-color: #F6FE38;
+            }
+            50% {
+                font-weight: 900;
+                font-size: 150%;
+                background-color: #F0FF00;
+            }
+            60% {
+                font-weight: 800;
+                font-size: 140%;
+                background-color: #F6FE38;
+            }
+            70% {
+                font-weight: 700;
+                font-size: 130%;
+                background-color: #F8FE69;
+            }
+            80% {
+                font-weight: 600;
+                font-size: 120%;
+                background-color: #FBFF9D;
+            }
+            90% {
+                font-weight: 500;
+                font-size: 110%;
+                background-color: #FCFECE;
+            }
+            100% {
+                font-weight: 400;
+                font-size: 100%;
+                background-color: #FFFFFF;
+            }
+        }
+    </style>
+    <div class="heroe">
+        <div class="container">
+            <form action="." method="POST" class="form-inline">
+                <div class="form-group">
+                    {{form.company(class="form-control")}}
+                </div>
+                <button type="submit" disabled id="searcher_but" class="btn btn-success">Submit</button>
+            </form>
+            <br>
+            <table class="table_values">
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Stock Exchange</th>
+                    <th>Stock Exchange MIC</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Open</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                </tr>
+                {% for datas in data.data %}
+                    <tr>
+                        <td><a href="/company/{{datas.stock_exchange.mic}}/{{datas.symbol}}">{{ datas.name }}</a></td>
+                        <td>{{ datas.symbol }}</td>
+                        <td>{{ datas.stock_exchange.acronym }}</td>
+                        {% for data_values in data_value.data %}
+                            {% if data_values.symbol==datas.symbol %}
+                            <td>{{ data_values.exchange }}</td>
+                            <td>{{ data_values.high }} $</td>
+                            <td>{{ data_values.low }} $</td>
+                            <td>{{ data_values.open }} $</td>
+                            <td>{{ data_values.close }} $</td>
+                            <td>{{ data_values.volume }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script src="../static/market.js"></script>
+    <script>
+        $( document ).ready(function() {
+            search.style.backgroundImage = "url('https://www.w3schools.com/css/searchicon.png')";
+            search.style.backgroundPosition = "10px 6px";
+            search.style.backgroundRepeat = "no-repeat";
+            search.style.padding = "12px 20px 12px 40px";
+        });
+
+        var companies=[];
+        function loadCompanies(){
+            $.getJSON('/companies', function(data, status, xhr){
+                for (var i = 0; i < data.length; i++ ) {
+                    companies.push(data[i].symbol);
+                }
+            });
+        };
+        loadCompanies();
+
+        $('#company').autocomplete({
+            source: companies,
+            select: function(){
+                search_but.disabled = false;
+                search.style.animation = "big_search 2.5s ease-in-out 1";
+            }
+        });
+        $('form').on('submit', function(e){
+            $.ajax({
+                data: {
+                    company:$('#company').val()
+                },
+                type: 'POST',
+                url : '/process',
+            })
+        });
+    </script>
+{% endblock %}

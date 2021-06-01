@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block head %}
+    <script src='../static/Chart.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBJEF48LGB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YBJEF48LGB');
+    </script>
+{% endblock %}
+{% block content %}
+    <style>
+        #vsbut {
+            border-radius: 7px;
+            transition: all 0.3s ease-in-out;
+        }
+        #vsbut:hover {
+            transform: scale(1.05);
+            box-shadow: 3px 5px 5px rgba(75,2,134,0.3);
+        }
+    </style>
+    <div class="heroe">
+        <div class="container">
+            <canvas id="myChart" width="900" height="600"></canvas>
+            <form action="." method="POST">
+                <label for="company">Company</label>
+                <select name="company" id="company" onchange="onCompanySelected" class="select">
+                    <option disabled selected value="selectv">Select a company</option>
+                </select>
+                <label for="vs">VS</label>
+                <select name="vs" id="vs" onchange="onCompanySelected" class="select">
+                    <option disabled selected value="selectv">Select a company</option>
+                </select>
+                <button type="submit" disabled id="vsbut" class="btn btn-success">Compare</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <script src="static/scripts.js"></script>
+    <script>
+
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+      Chart.defaults.global.responsive = false;
+
+      // define the chart data
+      var chartData = {
+        labels : [{% if data1 %}
+                        {% for item in data1.data|reverse %}
+                            "{{item.date}}".substring(2,10),
+                        {% endfor %}
+                    {% else %}
+                        {% for item in labels %}
+                           "{{item}}",
+                        {% endfor %}
+                    {% endif %}],
+        datasets : [{
+            label: '{{ legends[0]|safe }}',
+            borderColor: "rgba(75,192,192,1)",
+            backgroundColor: "rgba(75,192,192,0.25)",
+            borderCapStyle: 'butt',
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 2,
+            pointHitRadius: 10,
+            data : [{% if data1 %}
+                        {% for item in data1.data|reverse %}
+                            {{item.close}},
+                        {% endfor %}
+                    {% else %}
+                        {% for item in values %}
+                            {{item}},
+                        {% endfor %}
+                    {% endif %}]
+        },{
+            label: '{{ legends[1]|safe }}',
+            borderColor: "rgba(29,219,48,1)",
+            backgroundColor: "rgba(29,219,48,0.25)",
+            borderCapStyle: 'butt',
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(29,219,48,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(29,219,48,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 2,
+            pointHitRadius: 10,
+            data : [{% if data2 %}
+                        {% for item in data2.data|reverse %}
+                            {{item.close}},
+                        {% endfor %}
+                    {% else %}
+                        {% for item in values %}
+                            {{item}},
+                        {% endfor %}
+                    {% endif %}]
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("myChart").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+    </script>
+{% endblock %}

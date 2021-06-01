@@ -1,0 +1,13 @@
+.heroe{
+    width: 100%;
+    min-height: 100vh;
+    margin-top: 20px;
+}
+
+.container{
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    height: auto;
+}

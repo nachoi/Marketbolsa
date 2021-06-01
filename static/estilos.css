@@ -1,0 +1,210 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+   background: url(imagen.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
+* {
+    box-sizing: border-box;
+}
+
+input[type='checkbox'] {
+    -webkit-appearance: none;
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 5px;
+    border: 2px solid #555;
+    vertical-align:middle;
+    background-image: url(/static/hide.JPG);
+    background-size: 85%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+input[type='checkbox']:checked {
+    background-image: url(/static/show.JPG);
+    background-size: 90%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+@keyframes showpass {
+    0% {
+        font-weight: 400;
+        font-size: 100%;
+        background-color: #FFFFFF;
+    }
+    10% {
+        font-weight: 500;
+        font-size: 110%;
+        background-color: #FCFECE;
+    }
+    20% {
+        font-weight: 600;
+        font-size: 120%;
+        background-color: #FBFF9D;
+    }
+    30% {
+        font-weight: 700;
+        font-size: 130%;
+        background-color: #F8FE69;
+    }
+    40% {
+        font-weight: 800;
+        font-size: 140%;
+        background-color: #F6FE38;
+    }
+    50% {
+        font-weight: 900;
+        font-size: 150%;
+        background-color: #F0FF00;
+    }
+    60% {
+        font-weight: 800;
+        font-size: 140%;
+        background-color: #F6FE38;
+    }
+    70% {
+        font-weight: 700;
+        font-size: 130%;
+        background-color: #F8FE69;
+    }
+    80% {
+        font-weight: 600;
+        font-size: 120%;
+        background-color: #FBFF9D;
+    }
+    90% {
+        font-weight: 500;
+        font-size: 110%;
+        background-color: #FCFECE;
+    }
+    100% {
+        font-weight: 400;
+        font-size: 100%;
+        background-color: #FFFFFF;
+    }
+}
+@keyframes showpass1 {
+    0% {
+        font-weight: 400;
+        font-size: 100%;
+        background-color: #FFFFFF;
+    }
+    10% {
+        font-weight: 500;
+        font-size: 110%;
+        background-color: #FCFECE;
+    }
+    20% {
+        font-weight: 600;
+        font-size: 120%;
+        background-color: #FBFF9D;
+    }
+    30% {
+        font-weight: 700;
+        font-size: 130%;
+        background-color: #F8FE69;
+    }
+    40% {
+        font-weight: 800;
+        font-size: 140%;
+        background-color: #F6FE38;
+    }
+    50% {
+        font-weight: 900;
+        font-size: 150%;
+        background-color: #F0FF00;
+    }
+    60% {
+        font-weight: 800;
+        font-size: 140%;
+        background-color: #F6FE38;
+    }
+    70% {
+        font-weight: 700;
+        font-size: 130%;
+        background-color: #F8FE69;
+    }
+    80% {
+        font-weight: 600;
+        font-size: 120%;
+        background-color: #FBFF9D;
+    }
+    90% {
+        font-weight: 500;
+        font-size: 110%;
+        background-color: #FCFECE;
+    }
+    100% {
+        font-weight: 400;
+        font-size: 100%;
+        background-color: #FFFFFF;
+    }
+}
+.checkbox {
+    margin-bottom: 40px;
+}
+.contenedor{
+    width: 100%;
+    padding: 15px;
+}
+.formulario{
+    background: #EEEEEE;
+    margin-top: 150px;
+    padding: 3px;
+}
+h1{
+    text-align: center;
+    color: rgb(5, 90, 33);
+    font-size: 40px;
+}
+input[type="text"],
+input[type="password"]{
+    font-size: 20px;
+    width: 82%;
+    padding: 10px;
+}
+.input-contenedor{
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+}
+.icon{
+    min-width: 50px;
+    text-align: center;
+    color: #999;
+}
+.button{
+    border: none;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+    background:  rgb(5, 90, 33);
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover{
+    background: rgb(5, 90, 33);
+}
+p{
+    text-align: center;
+}
+.link{
+    text-decoration: none;
+      color: #1a2537;
+    font-weight: 600;
+}
+.link:hover{
+     color: rgb(5, 90, 33);
+}
+@media(min-width:768px)
+{
+    .formulario{
+        margin: auto;
+        width: 500px;
+        margin-top: 150px;
+        border-radius: 2%;
+    }
+}
