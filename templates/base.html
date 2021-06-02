@@ -19,9 +19,9 @@
         <ul class="nav navbar-nav">
           <li class={% if module=='home' %}"active"{%else%}""{%endif%}><a href="/">Home</a></li>
           <li class={% if module=='market' %}"active"{%else%}""{%endif%}><a href="{{ url_for('market') }}">Market</a></li>
-          <li class={% if module=='module002' %}"active"{%else%}""{%endif%}><a href="/module002">Comparative Chart</a></li>
+          <li class={% if module=='module002' %}"active"{%else%}""{%endif%}><a href="/chart">Comparative Chart</a></li>
           {% if current_user.is_authenticated %}
-            <li class={% if module=='module003' %}"active"{%else%}""{%endif%}><a href="/wallet">Wallet</a></li>
+            <li class={% if module=='wallet' %}"active"{%else%}""{%endif%}><a href="/wallet">Wallet</a></li>
             {% if current_user.profile in ('admin') %}
                 <li><a href="/admin">Admin</a></li>
             {% endif %}

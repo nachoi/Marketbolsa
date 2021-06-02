@@ -4,7 +4,7 @@ const vsButton = document.querySelector('#vsbut');
 const chart = document.querySelector('#myChart');
 
 
-fetchData(`http://api.marketstack.com/v1/tickers?access_key=8d7275eb2c1718096946265b1b7c15e3`, function (data) {
+fetchData(`http://api.marketstack.com/v1/tickers?access_key=49baab260b59e1fdc245c6444ba0891d`, function (data) {
     showCompanies(data.data);
 });
 

@@ -67,11 +67,11 @@ def index():
         db.session.add(Cash(user_id=id, money=sum_money)) #Añadimos a la bbdd el dinero total actual del usuario
 
     db.session.commit()
-    return render_template("wallet.html",module="module003", info=info, stocks=stocks, buy_id = request.args.get('buy_id', id_buy), sell_id = id_sell)
+    return render_template("wallet.html",module="wallet", info=info, stocks=stocks, buy_id = request.args.get('buy_id', id_buy), sell_id = id_sell)
 
 def getClosePrice(symbol, exchange):
     params = {
-        'access_key' : '8d7275eb2c1718096946265b1b7c15e3'
+        'access_key' : '3f22c61015f46196c6d24b254a80e4ef'
     }
     #Obtener los ultimos valores de bolsa de la empresa relacionada con el simbolo
     params.setdefault('symbols',symbol)#Añadimos el parametro symbols con el valor symbol a los parámetros que usaremos para hacer esta petición

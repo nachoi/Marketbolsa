@@ -87,7 +87,7 @@ def market():
         #Obtener datos de las empresas
         search_limit = 7; #Máximo 50 para poder sacar sus valores
         params = {
-          'access_key' : '8d7275eb2c1718096946265b1b7c15e3'
+          'access_key' : '329a00fb1ff242e35b6701acd1c98e20'
         }
         params.setdefault('limit',search_limit)
         res = requests.get("http://api.marketstack.com/v1/tickers",params)
@@ -125,7 +125,7 @@ def process():
 def show_companies(symbol):
     #Obtener datos de las empresas
     params = {
-      'access_key' : '8d7275eb2c1718096946265b1b7c15e3'
+      'access_key' : '6f62d772885243d6d10213665419268e'
     }
     params.setdefault('search',symbol)
     res = requests.get("http://api.marketstack.com/v1/tickers",params)
@@ -144,7 +144,7 @@ def show_companies(symbol):
 @app.route('/company/<mic>/<symbol>', methods=['GET','POST'])
 def show_company(mic,symbol):
     params = {
-        'access_key' : '8d7275eb2c1718096946265b1b7c15e3'
+        'access_key' : '6f62d772885243d6d10213665419268e'
         }
     if request.method=='GET':
         #Obtener datos de las empresas

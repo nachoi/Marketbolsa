@@ -17,10 +17,10 @@ app.config.from_object(__name__)
 
 #from paquete.codigo import objeto
 #from carperta.codigopython import objeto
-from module002.module002 import module002
+from module002.module002 import chart_bp
 from wallet.views import wallet_bp
 
-app.register_blueprint(module002, url_prefix="/module002")
+app.register_blueprint(chart_bp, url_prefix="/chart")
 app.register_blueprint(wallet_bp, url_prefix="/wallet")
 
 SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
