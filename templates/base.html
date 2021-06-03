@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Marketbolsa(test) </title>
+    <title> Marketbolsa </title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -19,7 +19,7 @@
         <ul class="nav navbar-nav">
           <li class={% if module=='home' %}"active"{%else%}""{%endif%}><a href="/">Home</a></li>
           <li class={% if module=='market' %}"active"{%else%}""{%endif%}><a href="{{ url_for('market') }}">Market</a></li>
-          <li class={% if module=='module002' %}"active"{%else%}""{%endif%}><a href="/chart">Comparative Chart</a></li>
+          <li class={% if module=='chart' %}"active"{%else%}""{%endif%}><a href="/chart">Comparative Chart</a></li>
           {% if current_user.is_authenticated %}
             <li class={% if module=='wallet' %}"active"{%else%}""{%endif%}><a href="/wallet">Wallet</a></li>
             {% if current_user.profile in ('admin') %}
